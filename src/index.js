@@ -1,10 +1,11 @@
 // src/index.js
 import express from "express";
 import cors from "cors";
-import { handleStoreSignUp } from "./controller/store.controller.js";
+import { handleStoreSignUp,handleListStoreReviews} from "./controller/store.controller.js";
 import { handleReviewSignUp } from "./controller/review.controller.js";
-import { handleMissionSignUp } from "./controller/mission.controller.js";
+import { handleMissionSignUp,handleListStoreMissions,handleListUserInProgressMissions,handleCompleteUserMission   } from "./controller/mission.controller.js";
 import { handleChallengeSignUp } from "./controller/challenge.controller.js";
+import { handleListUserReviews } from './controller/user.controller.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,22 @@ app.post("/api/missions", handleMissionSignUp);
 
 // 가게의 미션 도전하기 API
 app.post("/api/challenges", handleChallengeSignUp);
+
+// 리뷰 목록 확인 
+app.get("/api/stores/:storeId/reviews", handleListStoreReviews)
+
+// 내가 작성한 리뷰 목록 확인 
+app.get('/api/users/:userId/reviews', handleListUserReviews);
+
+// 특정 가게의 미션 목록 조회 API
+app.get('/api/stores/:storeId/missions', handleListStoreMissions);
+
+// 특정 사용자의 진행 중인 미션 목록 조회 API
+app.get('/api/users/:userId/missions/in-progress', handleListUserInProgressMissions);
+
+
+// 특정 사용자의 진행 중인 미션 완료로 업데이트 API
+app.put('/api/users/:userId/missions/:missionId/complete', handleCompleteUserMission);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

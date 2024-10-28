@@ -5,7 +5,7 @@ export const bodyToUser = (body) => {
       email: body.email,
       name: body.name,
       gender: body.gender,
-      birth,
+      birth:birth.gender,
       address: body.address || "",
       detailAddress: body.detailAddress || "",
       phoneNumber: body.phoneNumber,
@@ -13,15 +13,15 @@ export const bodyToUser = (body) => {
     };
   };
 
-  export const responseFromUser = (user) => {
-    return {
-      email: user.email,
-      name: user.name,
-      gender: user.gender,
-      birth: user.birth ? user.birth.toISOString().split("T")[0] : "", // 'YYYY-MM-DD' 형식으로 변환
-      address: user.address || "",
-      detailAddress: user.detailAddress || "",
-      phoneNumber: user.phoneNumber,
-      preferences: user.preferences,
-    };
+export const responseFromUser = ({ user, preferences }) => {
+  const preferFoods = preferences.map(
+    (preference) => preference.foodCategory.name
+  );
+
+  return {
+    email: user.email,
+    name: user.name,
+    preferCategory: preferFoods,
   };
+};
+

@@ -7,11 +7,25 @@ export const bodyToMission = (body) => {
     };
 };
 
-export const responseFromMission = (mission) => {
-    return {
-        missionId: mission.missionId,
-        regionId: mission.regionId,
-        description: mission.description,
-        missionStatus: mission.missionStatus
-    };
-};
+export const responseFromMission = (mission) => ({
+    missionId: mission.id,
+    description: mission.description,
+    status: mission.mission_status,
+    createdAt: mission.created_at,
+    region: mission.region
+      ? {
+          regionId: mission.region.id,
+          regionName: mission.region.region_name,
+        }
+      : null,
+  });
+  
+  export const responseFromMissions = (missions) => ({
+    data: missions.map((mission) => responseFromMission(mission)),
+    pagination: {
+      cursor: missions.length ? missions[missions.length - 1].id : null,
+    },
+  });
+
+
+  

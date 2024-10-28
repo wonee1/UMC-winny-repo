@@ -4,7 +4,7 @@ export const bodyToChallenge = (body) => {
         userId: body.userId,
         missionId: body.missionId,
         storeId: body.storeId,
-        status: "진행 중"
+        status: "IN_PROGRESS"
     };
 };
 

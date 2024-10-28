@@ -1,18 +1,16 @@
 // src/repositories/store.repository.js
-import { pool } from "../db.config.js";
+import { prisma } from "../db.config.js";
 
 export const addStore = async (data) => {
-    const conn = await pool.getConnection();
-
-    try {
-        const [result] = await pool.query(
-            `INSERT INTO stores (store_name, store_address, region_id) VALUES (?, ?, ?);`,
-            [data.storeName, data.address, data.regionId]
-        );
-        return result.insertId;
-    } catch (err) {
-        throw new Error(`오류가 발생했어요. 요청 파라미터를 확인해주세요. (${err})`);
-    } finally {
-        conn.release();
-    }
+  const result = await prisma.stores.create({
+    data: {
+      store_name: data.storeName,
+      store_address: data.address,
+      region_id: data.regionId,
+    },
+  });
+  return result.id;
 };
+
+
+//ORM 형식으로 변경 
