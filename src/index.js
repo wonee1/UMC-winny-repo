@@ -58,9 +58,6 @@ app.get('/api/users/:userId/missions/in-progress', handleListUserInProgressMissi
 app.put('/api/users/:userId/missions/:missionId/complete', handleCompleteUserMission);
 
 
-/**
- * 전역 오류를 처리하기 위한 미들웨어
- */
 app.use((err, req, res, next) => {
     if (res.headersSent) {
       return next(err);
@@ -73,7 +70,6 @@ app.use((err, req, res, next) => {
     });
   
 });
-  
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
