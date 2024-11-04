@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### 미션 도전 (가게의 미션을 도전 중인 미션에 추가)
-POST http://localhost:3000/api/user-missions
+POST http://localhost:3000/api/challenges
 Content-Type: application/json
 
 {

@@ -6,7 +6,9 @@ export const addStore = async (data) => {
     data: {
       store_name: data.storeName,
       store_address: data.address,
-      region_id: data.regionId,
+      region: {
+        connect: { id: data.regionId }, // region_id가 아닌 region을 참조합니다.
+      },
     },
   });
   return result.id;

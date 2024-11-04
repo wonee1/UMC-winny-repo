@@ -3,8 +3,8 @@ import { prisma } from "../db.config.js";
 export const addReview = async (data) => {
   const result = await prisma.reviews.create({
     data: {
-      user_id: data.userId,
-      store_id: data.storeId,
+      user: { connect: { id: data.userId } },  // user_id를 직접 넣지 않고 관계로 연결
+      store: { connect: { id: data.storeId } }, // store_id를 직접 넣지 않고 관계로 연결
       rating: data.rating,
       review_text: data.reviewText,
     },

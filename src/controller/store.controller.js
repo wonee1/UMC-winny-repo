@@ -7,7 +7,7 @@ export const handleStoreSignUp = async (req, res, next) => {
     const store = await storeSignUp(bodyToStore(req.body));
     res.status(StatusCodes.CREATED).success(store);
   } catch (error) {
-    next(error);
+    next(error); // 전역 오류 핸들러로 오류 전달
   }
 };
 

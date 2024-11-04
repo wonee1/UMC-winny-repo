@@ -12,7 +12,7 @@ export const handleMissionSignUp = async (req, res, next) => {
     const mission = await missionSignUp(bodyToMission(req.body));
     res.status(StatusCodes.CREATED).success(mission);
   } catch (error) {
-    next(error);
+    next(error); // 전역 오류 핸들러로 오류 전달
   }
 };
 

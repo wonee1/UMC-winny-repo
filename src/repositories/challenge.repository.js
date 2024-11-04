@@ -3,9 +3,9 @@ import { prisma } from "../db.config.js";
 export const addChallenge = async (data) => {
   const existing = await prisma.user_missions.findFirst({
     where: {
-      user_id: data.userId,
-      mission_id: data.missionId,
-      status: '진행 중',
+      userId: data.userId,
+      missionId: data.missionId,
+      status: 'IN_PROGRESS',
     },
   });
 
@@ -15,14 +15,25 @@ export const addChallenge = async (data) => {
 
   const result = await prisma.user_missions.create({
     data: {
-      user_id: data.userId,
-      mission_id: data.missionId,
-      store_id: data.storeId,
+      user: {
+        connect: { id: data.userId },
+      },
+      mission: {
+        connect: { id: data.missionId },
+      },
+      store: {
+        connect: { id: data.storeId },
+      },
+      point: {
+        create: {
+          userId: data.userId,
+          points: 0, // 도전 중일 때 초기 포인트 설정
+        },
+      },
       status: data.status,
     },
   });
 
   return result.id;
 };
-
 //ORM 형식으로 변경 

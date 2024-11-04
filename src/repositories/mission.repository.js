@@ -1,12 +1,23 @@
 import { prisma } from "../db.config.js";
 
 export const addMission = async (data) => {
-  const result = await prisma.missions.create({
-    data: {
-      region_id: data.regionId,
-      description: data.description,
-      mission_status: data.missionStatus,
+  const missionData = {
+    region: {
+      connect: { id: data.regionId },
     },
+    description: data.description,
+    mission_status: data.missionStatus,
+  };
+
+  // storeId가 존재하는 경우에만 store를 연결합니다.
+  if (data.storeId) {
+    missionData.store = {
+      connect: { id: data.storeId },
+    };
+  }
+
+  const result = await prisma.missions.create({
+    data: missionData,
   });
   return result.id;
 };
