@@ -13,6 +13,22 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+app.use((req, res, next) => {
+    res.success = (success) => {
+      return res.json({ resultType: "SUCCESS", error: null, success });
+    };
+  
+    res.error = ({ errorCode = "unknown", reason = null, data = null }) => {
+      return res.json({
+        resultType: "FAIL",
+        error: { errorCode, reason, data },
+        success: null,
+      });
+    };
+  
+    next();
+});
+  
 // 가게 추가 API
 app.post("/api/stores", handleStoreSignUp);
 
@@ -40,6 +56,24 @@ app.get('/api/users/:userId/missions/in-progress', handleListUserInProgressMissi
 
 // 특정 사용자의 진행 중인 미션 완료로 업데이트 API
 app.put('/api/users/:userId/missions/:missionId/complete', handleCompleteUserMission);
+
+
+/**
+ * 전역 오류를 처리하기 위한 미들웨어
+ */
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+      return next(err);
+    }
+  
+    res.status(err.statusCode || 500).error({
+      errorCode: err.errorCode || "unknown",
+      reason: err.reason || err.message || null,
+      data: err.data || null,
+    });
+  
+});
+  
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
